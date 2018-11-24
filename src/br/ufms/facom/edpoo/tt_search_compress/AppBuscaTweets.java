@@ -114,6 +114,7 @@ public class AppBuscaTweets extends Application {
 	/**
 	 * Busca tweets usando os termos fornecidos pelo usuário.
 	 */
+	
 	private void buscar() {
 		try {
 			// Limpa lista de tweets anteriores.
@@ -128,26 +129,12 @@ public class AppBuscaTweets extends Application {
 
 			// Percorre todos os tweets retornados.
 			int numTweets = 0;
-			for (Status status : result.getTweets()) {
-				/*
-				 * Substitui sequências de espaços por um único espaço, incluindo quebras de
-				 * linha e tabulações.
-				 */
-				String tweetLimpo = status.getText().replaceAll("[\\t\\n\\r]+", " ");
-
-				// Cria uma string com o nome do usuário e o texto do seu tweet.
-				String tweet = String.format("@%s: %s", status.getUser().getScreenName(), tweetLimpo);
-
-				// Adiciona texto na lista de tweets.
-				tweets.add(tweet);
-
-				++numTweets;
-			}
+		
 
 			// Se houver mais uma página de resultados, executa a nova busca.
-			if (result.hasNext()) {
+			while (result.hasNext() && numTweets<=1000) {
 				// Obtém query para próxima página.
-				query = result.nextQuery();
+				
 
 				// Executa busca.
 				result = apiTwitter.search(query);
@@ -168,6 +155,7 @@ public class AppBuscaTweets extends Application {
 
 					++numTweets;
 				}
+				query = result.nextQuery();
 			}
 
 			// Exibe mensagem de quantos tweets foram recuperados.
