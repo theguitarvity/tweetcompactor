@@ -49,8 +49,10 @@ public class CompacHuffman {
 
 		// tabulate frequency counts
 		int[] freq = new int[R];
-		for (int i = 0; i < input.length; i++)
-			freq[input[i]]++;
+		for (int i = 0; i < input.length; i++) {
+			if(input[i]<256)
+				freq[input[i]]++;
+		}
 
 		// build Huffman trie
 		Node root = buildTrie(freq);
@@ -67,7 +69,14 @@ public class CompacHuffman {
 
 		// use Huffman code to encode input
 		for (int i = 0; i < input.length; i++) {
-			String code = st[input[i]];
+			String code = "";
+			try {
+				code = st[input[i]];
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+				code = "0";
+			}
 			for (int j = 0; j < code.length(); j++) {
 				if (code.charAt(j) == '0') {
 					BinaryStdOut.write(false);
@@ -157,7 +166,37 @@ public class CompacHuffman {
 		}
 		BinaryStdOut.close();
 	}
+	private static String buildCodeS(String[] st, Node x, String s) {
+        if (!x.isLeaf()) {
+            buildCode(st, x.left,  s + '0');
+            buildCode(st, x.right, s + '1');
+        }
+        else {
+            st[x.ch] = s;
+            //StdOut.println(x.ch + " = " + s);
+            return s;
+        }
+        return null;
+    }
+	public static String returnCode() {
+        // read the input
+        String s = BinaryStdIn.readString();
+        char[] input = s.toCharArray();
 
+        // tabulate frequency counts
+        int[] freq = new int[R];
+        for (int i = 0; i < input.length; i++)
+            freq[input[i]]++;
+
+        // build Huffman trie
+        Node root = buildTrie(freq);
+
+        // build code table
+        String[] st = new String[R];
+        String saida = buildCodeS(st, root, "");
+        return saida;
+
+    }
 	private static Node readTrie() {
 		boolean isLeaf = BinaryStdIn.readBoolean();
 		if (isLeaf) {

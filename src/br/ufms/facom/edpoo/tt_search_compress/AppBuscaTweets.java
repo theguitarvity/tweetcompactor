@@ -154,6 +154,7 @@ public class AppBuscaTweets extends Application {
 					tweets.add(tweet);
 
 					++numTweets;
+					System.out.println(tweet);
 				}
 				query = result.nextQuery();
 			}
@@ -191,11 +192,19 @@ public class AppBuscaTweets extends Application {
 			 * por quebra de linha.
 			 */
 			StringBuilder sb = new StringBuilder();
-			for (String t : tweets)
+			for (String t : tweets) {
+				
+				
 				sb.append(t + "\n");
+			}
+			CompacHuffman cp = new CompacHuffman(sb.toString());
+			cp.compress();
+			String saida = cp.returnCode();
+			
+			
 
 			// Cria stream de entrada a partir dos bytes da string criada acima.
-			BinaryIn in = new BinaryIn(new ByteArrayInputStream(sb.toString().getBytes()));
+			BinaryIn in = new BinaryIn(new ByteArrayInputStream(saida.getBytes()));
 
 			// Abre arquivo de saída como um stream binário.
 			BinaryOut out = new BinaryOut(f.getAbsolutePath());
