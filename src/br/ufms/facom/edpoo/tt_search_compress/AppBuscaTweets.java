@@ -213,7 +213,10 @@ public class AppBuscaTweets extends Application {
 			alert.showAndWait();
 		}
 	}
-
+	public void compactar(File f) {
+		Huffman hf = null;
+		hf.compress();
+	}
 	/**
 	 * Lança aplicação.
 	 * 
