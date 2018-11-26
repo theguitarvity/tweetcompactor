@@ -197,14 +197,15 @@ public class AppBuscaTweets extends Application {
 				
 				sb.append(t + "\n");
 			}
-			CompacHuffman cp = new CompacHuffman(sb.toString());
+			CompacHuffman cp = new CompacHuffman("hello mundo fodido filho da puta");
 			cp.compress();
+			
 			String saida = cp.returnCode();
 			
 			
 
 			// Cria stream de entrada a partir dos bytes da string criada acima.
-			BinaryIn in = new BinaryIn(new ByteArrayInputStream(saida.getBytes()));
+			BinaryIn in = new BinaryIn(saida);
 
 			// Abre arquivo de saída como um stream binário.
 			BinaryOut out = new BinaryOut(f.getAbsolutePath());
