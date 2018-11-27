@@ -192,40 +192,25 @@ public class AppBuscaTweets extends Application {
 			 * por quebra de linha.
 			 */
 			StringBuilder sb = new StringBuilder();
-			for (String t : tweets) {
-				
-				
+			for (String t : tweets) {				
 				sb.append(t + "\n");
 			}
-			CompacHuffman cp = new CompacHuffman("hello mundo fodido filho da puta");
-			cp.compress();
-			
-			String saida = cp.returnCode();
+			compactar(f, sb.toString());
 			
 			
-
-			// Cria stream de entrada a partir dos bytes da string criada acima.
-			BinaryIn in = new BinaryIn(saida);
-
-			// Abre arquivo de saída como um stream binário.
-			BinaryOut out = new BinaryOut(f.getAbsolutePath());
-
-			while (!in.isEmpty())
-				out.write(in.readBoolean());
-
-			out.close();
-
+			
 			// Exibe aviso de sucesso.
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Tweets salvos");
 			alert.setHeaderText("Pasta: " + f.getParentFile().getAbsolutePath());
 			alert.setContentText("Arquivo: " + f.getName());
 			alert.showAndWait();
+			
 		}
 	}
-	public void compactar(File f) {
-		Huffman hf = null;
-		hf.compress();
+	public void compactar(File f, String tt) {
+		CompacHuffman hf = new CompacHuffman(tt);
+		hf.compress(f);
 	}
 	/**
 	 * Lança aplicação.

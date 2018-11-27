@@ -1,5 +1,9 @@
 package br.ufms.facom.edpoo.tt_search_compress;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import edu.princeton.cs.algs4.*;
 
 public class CompacHuffman {
@@ -42,7 +46,7 @@ public class CompacHuffman {
 	 * Huffman codes with an 8-bit alphabet; and writes the results to standard
 	 * output.
 	 */
-	public static void compress() {
+	public static void compress(File file) {
 		// read the input
 		String s = compac;
 		char[] input = s.toCharArray();
@@ -66,26 +70,52 @@ public class CompacHuffman {
 
 		// print number of bytes in original uncompressed message
 		BinaryStdOut.write(input.length);
-
-		// use Huffman code to encode input
-		for (int i = 0; i < input.length; i++) {
-			String code = "";
-			try {
-				code = st[input[i]];
+		try {
+			OutputStream out = new FileOutputStream(file);
+			StringBuilder saida = new StringBuilder();
+			BinaryOut out2 = new BinaryOut(file.getAbsolutePath());
+			// use Huffman code to encode input
+			for (int i = 0; i < input.length; i++) {
+				String code = "";
+				try {
+					code = st[input[i]];
+				}
+				catch (Exception e) {
+					// TODO: handle exception
+					code = "0";
+				}
+				for (int j = 0; j < code.length(); j++) {
+					if (code.charAt(j) == '0') {
+						//BinaryStdOut.write(false);
+						out2.write(false);
+						//saida.append(0);
+					} else if (code.charAt(j) == '1') {
+						//BinaryStdOut.write(true);
+						out2.write(true);
+						
+						//saida.append(1);
+			
+					} else
+						throw new IllegalStateException("Illegal state");
+				}
+				//out2.close();
+				/*BinaryIn in = new BinaryIn(saida.toString());
+				BinaryOut out = new BinaryOut(file.getAbsolutePath());
+				while(!in.isEmpty()) {
+					out.write(in.readInt());
+				}
+				out.close();*/
+				
 			}
-			catch (Exception e) {
-				// TODO: handle exception
-				code = "0";
-			}
-			for (int j = 0; j < code.length(); j++) {
-				if (code.charAt(j) == '0') {
-					BinaryStdOut.write(false);
-				} else if (code.charAt(j) == '1') {
-					BinaryStdOut.write(true);
-				} else
-					throw new IllegalStateException("Illegal state");
-			}
+			out2.close();
 		}
+		catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
+		
+
+		
 
 		// close output stream
 		BinaryStdOut.close();
